@@ -14,19 +14,20 @@ public class Seat extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private ConcertDate concertDate;
-
     private int seatNumber;
 
     @Enumerated(EnumType.STRING)
     private SeatStatus status;
 
-    public Seat(Long id, ConcertDate concertDate, int seatNumber, SeatStatus status) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "concert_date_id")
+    private ConcertDate concertDate;
+
+
+    public Seat(Long id, ConcertDate concertDate, int seatNumber, SeatStatus seatStatus) {
         this.id = id;
         this.concertDate = concertDate;
         this.seatNumber = seatNumber;
-        this.status = status;
+        this.status = seatStatus;
     }
-
 }
