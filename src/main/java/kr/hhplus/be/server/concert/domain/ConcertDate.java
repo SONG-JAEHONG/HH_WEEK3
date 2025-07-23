@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -17,14 +19,16 @@ public class ConcertDate extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    private LocalDate concertDate;
+
+    @ManyToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "concert_id")
     private Concert concert;
 
-    private LocalDate Date;
 
-    public ConcertDate(long id, Concert concert, LocalDate Date) {
+    public ConcertDate(Long id, Concert concert, LocalDate concertDate) {
         this.id = id;
         this.concert = concert;
-        this.Date = Date;
+        this.concertDate = concertDate;
     }
 }

@@ -18,6 +18,7 @@ import org.testcontainers.shaded.org.checkerframework.checker.units.qual.C;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -47,7 +48,7 @@ public class ConcertServiceTest {
                 new Concert(1L, "Jamie xx"),
                 new Concert(2L, "YeYe")
         );
-        given(concertRepository.findAllConcerts()).willReturn(DummyConcert);
+        given(concertRepository.findAll()).willReturn(DummyConcert);
 
         List<ConcertResponse> result = concertService.getAllConcerts();
 
@@ -68,7 +69,7 @@ public class ConcertServiceTest {
                 new ConcertDate(2L,concert, LocalDate.of(2025,7,24)),
                 new ConcertDate(3L,concert, LocalDate.of(2025,7,25))
         );
-        given(concertRepository.findDatesByConcertId(concertId)).willReturn(DummyConcertDate);
+        given(concertRepository.findByConcertId(concertId)).willReturn(DummyConcertDate);
 
         List<ConcertDateResponse> result = concertService.getConcertDates(concertId);
 
@@ -79,8 +80,11 @@ public class ConcertServiceTest {
 
     }
 
+
+
+
     @Test
-    void 좌석_목록_조회(){
+    void 전체_좌석_목록_조회(){
         Concert concert = new Concert(1L, "YeYe");
         ConcertDate concertDate = new ConcertDate(1L,concert,LocalDate.of(2025,7,23));
 
@@ -89,7 +93,7 @@ public class ConcertServiceTest {
             new Seat(2L,concertDate,11, SeatStatus.AVAILABLE)
         );
 
-        given(concertRepository.findAvailableSeatsByConcertDateId(1L)).willReturn(DummySeat);
+        given(concertRepository.findAvailableSeatsByConcertDateId(1L, SeatStatus.AVAILABLE)).willReturn(DummySeat);
 
         List<SeatResponse> result = concertService.getSeats(1L);
 
@@ -99,10 +103,11 @@ public class ConcertServiceTest {
 
     }
 
+
     @Test
     void 콘서트_리스트가_null이면_NPE_발생() {
         // given
-        given(concertRepository.findAllConcerts()).willReturn(null);
+        given(concertRepository.findAll()).willReturn(null);
 
         // when / then
         assertThatThrownBy(() -> {
@@ -115,7 +120,7 @@ public class ConcertServiceTest {
     void 존재하지_않는_콘서트의_빈_날짜_리스트_반환() {
         // given
         Long fakeConcertId = 999L;
-        given(concertRepository.findDatesByConcertId(fakeConcertId)).willReturn(List.of());
+        given(concertRepository.findByConcertId(fakeConcertId)).willReturn(List.of());
 
         // when
         List<ConcertDateResponse> result = concertService.getConcertDates(fakeConcertId);
@@ -130,7 +135,7 @@ public class ConcertServiceTest {
        Long fakeConcertDatId = 999L;
 
         // given
-        given(concertRepository.findAvailableSeatsByConcertDateId(fakeConcertDatId)).willReturn(List.of());
+        given(concertRepository.findAvailableSeatsByConcertDateId(fakeConcertDatId, SeatStatus.AVAILABLE)).willReturn(List.of());
 
         List<SeatResponse> result = concertService.getSeats(fakeConcertDatId);
 
