@@ -16,6 +16,7 @@ public class Seat extends BaseTimeEntity {
 
     private int seatNumber;
 
+
     @Enumerated(EnumType.STRING)
     private SeatStatus status;
 
@@ -29,5 +30,5 @@ public class Seat extends BaseTimeEntity {
         this.concertDate = concertDate;
         this.seatNumber = seatNumber;
         this.status = seatStatus;
-    }
+     }
 }

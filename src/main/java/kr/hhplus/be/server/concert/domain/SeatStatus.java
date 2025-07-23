@@ -5,4 +5,5 @@ public enum SeatStatus {
     AVAILABLE,
     HOLDING,
     RESERVED
+
 }

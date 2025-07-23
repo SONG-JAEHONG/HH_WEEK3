@@ -34,7 +34,6 @@ public class ConcertServiceTest {
     private ConcertRepository concertRepository;
     private ConcertService concertService;
 
-
     @BeforeEach
     void setUp(){
 

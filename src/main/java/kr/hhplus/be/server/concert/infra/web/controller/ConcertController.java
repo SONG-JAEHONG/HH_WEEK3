@@ -36,4 +36,5 @@ public class ConcertController {
     public List<SeatResponse> getSeats(@PathVariable Long concertDateId){
         return concertUseCase.getSeats(concertDateId);
     }
+
 }

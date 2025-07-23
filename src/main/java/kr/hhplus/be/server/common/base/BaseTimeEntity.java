@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class BaseTimeEntity {
 
+
     @CreationTimestamp
     protected LocalDateTime createdAt;
 

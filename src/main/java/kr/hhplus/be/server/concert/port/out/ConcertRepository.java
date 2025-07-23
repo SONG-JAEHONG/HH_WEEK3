@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ConcertRepository {
+
     List<Concert> findAll();
     List<ConcertDate> findByConcertId(Long concertId);
     List<Seat> findAvailableSeatsByConcertDateId(Long concertDateId, SeatStatus status);
+
 }

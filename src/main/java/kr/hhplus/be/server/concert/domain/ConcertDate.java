@@ -15,16 +15,17 @@ import java.util.List;
 @NoArgsConstructor
 public class ConcertDate extends BaseTimeEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private LocalDate concertDate;
 
+
     @ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "concert_id")
     private Concert concert;
-
 
     public ConcertDate(Long id, Concert concert, LocalDate concertDate) {
         this.id = id;

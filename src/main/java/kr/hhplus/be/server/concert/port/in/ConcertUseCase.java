@@ -13,8 +13,10 @@ import java.util.List;
 
 public interface ConcertUseCase {
 
+
     List<ConcertResponse> getAllConcerts();
     List<ConcertDateResponse> getConcertDates(Long concertId);
     List<SeatResponse> getSeats(Long concertDateId);
+
 
 }
