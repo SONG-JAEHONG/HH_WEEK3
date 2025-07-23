@@ -19,7 +19,6 @@ public class ConcertService implements ConcertUseCase {
 
     private final ConcertRepository concertRepository;
 
-
     @Override
     public List<ConcertResponse> getAllConcerts(){
         return concertRepository.findAll().stream()
