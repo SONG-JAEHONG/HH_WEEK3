@@ -36,4 +36,15 @@ public class Reservation extends BaseTimeEntity {
     private ReservationStatus status;
 
 
+    public static Reservation holding(User user,ConcertDate concertDate, Seat seat) {
+        Reservation reservation = new Reservation();
+        reservation.user = user;
+        reservation.concertDate = concertDate;
+        reservation.seat = seat;
+        reservation.status = ReservationStatus.HOLDING;
+
+        return reservation;
+    }
+
+
 }

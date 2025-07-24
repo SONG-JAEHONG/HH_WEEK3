@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +33,7 @@ public class Payment extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+
 
 
 }

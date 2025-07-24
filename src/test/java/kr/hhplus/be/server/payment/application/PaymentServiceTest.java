@@ -44,7 +44,7 @@ class PaymentServiceTest {
         Reservation reservation = new Reservation();  // 필요한 경우 필드 초기화
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(reservationRepository.findById(reservationId)).thenReturn(reservation);
+        when(reservationRepository.findById(reservationId)).thenReturn(Optional.of(reservation));
 
         // when
         paymentService.pay(userId, reservationId, amount);
@@ -65,7 +65,7 @@ class PaymentServiceTest {
         Reservation reservation = new Reservation();
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(reservationRepository.findById(reservationId)).thenReturn(reservation);
+        when(reservationRepository.findById(reservationId)).thenReturn(Optional.of(reservation));
 
         // when & then
         assertThatThrownBy(() -> paymentService.pay(userId, reservationId, amount))
