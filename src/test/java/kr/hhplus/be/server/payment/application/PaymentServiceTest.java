@@ -11,6 +11,8 @@ import kr.hhplus.be.server.user.port.out.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -41,7 +43,7 @@ class PaymentServiceTest {
         User user = new User(userId, 1000L);
         Reservation reservation = new Reservation();  // 필요한 경우 필드 초기화
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(reservationRepository.findById(reservationId)).thenReturn(reservation);
 
         // when
@@ -62,7 +64,7 @@ class PaymentServiceTest {
         User user = new User(userId, 1000L);
         Reservation reservation = new Reservation();
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(reservationRepository.findById(reservationId)).thenReturn(reservation);
 
         // when & then

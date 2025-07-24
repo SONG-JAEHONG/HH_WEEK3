@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +35,7 @@ public class UserServiceTest {
         Long amount = 1000L;
         User user = new User(userId, 500L);
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // when
         userService.chargePoint(userId, amount);
@@ -50,7 +52,7 @@ public class UserServiceTest {
         Long amount = 300L;
         User user = new User(userId, 1000L);
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // when
         userService.usePoint(userId, amount);
@@ -67,7 +69,7 @@ public class UserServiceTest {
         Long amount = 1000L;
         User user = new User(userId, 500L);
 
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // when & then
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,

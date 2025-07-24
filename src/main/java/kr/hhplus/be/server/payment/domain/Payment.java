@@ -29,6 +29,7 @@ public class Payment extends BaseTimeEntity {
     @JoinColumn(name = "reservationId")
     private Reservation reservation;
 
+    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
 
