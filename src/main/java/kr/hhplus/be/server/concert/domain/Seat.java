@@ -5,6 +5,8 @@ import kr.hhplus.be.server.common.base.BaseTimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -24,12 +26,15 @@ public class Seat extends BaseTimeEntity {
     @JoinColumn(name = "concert_date_id")
     private ConcertDate concertDate;
 
+    private LocalDateTime expireTime;
 
-    public Seat(Long id, ConcertDate concertDate, int seatNumber, SeatStatus seatStatus) {
+
+     public Seat(Long id, ConcertDate concertDate, int seatNumber, SeatStatus seatStatus, LocalDateTime expireTime) {
         this.id = id;
         this.concertDate = concertDate;
         this.seatNumber = seatNumber;
         this.status = seatStatus;
+        this.expireTime = expireTime;
      }
 
     public void hold() {
@@ -37,6 +42,7 @@ public class Seat extends BaseTimeEntity {
             throw new IllegalStateException("이미 예약된 좌석입니다.");
         }
         this.status = SeatStatus.HOLDING;
+        this.expireTime = LocalDateTime.now().plusMinutes(5);
     }
 
     public boolean isAvailable() {
@@ -50,8 +56,15 @@ public class Seat extends BaseTimeEntity {
         this.status = SeatStatus.RESERVED;
     }
 
+
+
     public void release() {
-        this.status = SeatStatus.AVAILABLE;
+
+         if(this.status != SeatStatus.HOLDING){
+             throw new IllegalStateException("임시 배정 좌석이 아닙니다.");
+         }
+         this.status = SeatStatus.AVAILABLE;
+         this.expireTime = null;
     }
 
 }

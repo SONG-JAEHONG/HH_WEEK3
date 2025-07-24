@@ -88,8 +88,8 @@ public class ConcertServiceTest {
         ConcertDate concertDate = new ConcertDate(1L,concert,LocalDate.of(2025,7,23));
 
         List<Seat> DummySeat = List.of(
-            new Seat(1L,concertDate,10, SeatStatus.AVAILABLE),
-            new Seat(2L,concertDate,11, SeatStatus.AVAILABLE)
+            new Seat(1L,concertDate,10, SeatStatus.AVAILABLE, LocalDate.now().atStartOfDay()),
+            new Seat(2L,concertDate,11, SeatStatus.AVAILABLE, LocalDate.now().atStartOfDay())
         );
 
         given(concertRepository.findAvailableSeatsByConcertDateId(1L, SeatStatus.AVAILABLE)).willReturn(DummySeat);

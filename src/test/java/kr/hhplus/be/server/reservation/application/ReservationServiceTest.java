@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.reservation.application;
 
+import kr.hhplus.be.server.concert.application.SeatHoldingScheduler;
 import kr.hhplus.be.server.concert.domain.Concert;
 import kr.hhplus.be.server.concert.domain.ConcertDate;
 import kr.hhplus.be.server.concert.domain.Seat;
@@ -26,6 +27,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,6 +46,12 @@ public class ReservationServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    Seat expiredSeat;
+
+    @InjectMocks
+    SeatHoldingScheduler scheduler;
+
 
     @InjectMocks
     private ReservationService reservationService;
@@ -58,7 +67,7 @@ public class ReservationServiceTest {
 
         Concert concert = new Concert(concertId,"YeYe");
         ConcertDate concertDate = new ConcertDate(concertDateId,concert, LocalDate.of(2025,7,24) );
-        Seat seat = new Seat(seatId, concertDate, 1, SeatStatus.AVAILABLE);
+        Seat seat = new Seat(seatId, concertDate, 1, SeatStatus.AVAILABLE, LocalDate.now().atStartOfDay());
         User user = new User(userId, 10000L); // 필요시 생성자 또는 빌더 추가
 
         ConcertDate dummyconcertDate = mock(kr.hhplus.be.server.concert.domain.ConcertDate.class);
@@ -75,5 +84,22 @@ public class ReservationServiceTest {
         assertThat(response.getSeatId()).isEqualTo(seatId);
         verify(seatRepository).save(seat);
         verify(reservationRepository).save(any(Reservation.class));
+    }
+
+
+
+    @Test
+    void 만료된_좌석_해제_및_저장() {
+        // given
+        List<Seat> expiredSeats = List.of(expiredSeat);
+        when(seatRepository.findByStatusAndBeforeExpire(eq(SeatStatus.HOLDING), any(LocalDateTime.class)))
+                .thenReturn(expiredSeats);
+
+        // when
+        scheduler.releaseExpiredSeats();
+
+        // then
+        verify(expiredSeat).release();
+        verify(seatRepository, times(1)).save(expiredSeat);
     }
 }
